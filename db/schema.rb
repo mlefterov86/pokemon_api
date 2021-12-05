@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 2021_12_05_093000) do
     t.string "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["url"], name: "index_pokemons_on_url", unique: true
   end
 
   create_table "slots", charset: "utf8mb4", force: :cascade do |t|
@@ -34,7 +35,7 @@ ActiveRecord::Schema.define(version: 2021_12_05_093000) do
     t.string "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["name"], name: "index_types_on_name", unique: true
+    t.index ["name", "url"], name: "index_types_on_name_and_url", unique: true
   end
 
   add_foreign_key "slots", "pokemons"

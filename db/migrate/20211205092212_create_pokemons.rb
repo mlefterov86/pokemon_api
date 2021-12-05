@@ -5,6 +5,8 @@ class CreatePokemons < ActiveRecord::Migration[6.1]
       t.string :url
 
       t.timestamps
+
+      t.index [:url], unique: true
     end
   end
 end

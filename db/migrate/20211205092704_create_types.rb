@@ -6,7 +6,7 @@ class CreateTypes < ActiveRecord::Migration[6.1]
 
       t.timestamps
 
-      t.index [:name], unique: true
+      t.index [:name, :url], unique: true
     end
   end
 end
