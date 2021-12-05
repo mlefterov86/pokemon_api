@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_05_093000) do
+ActiveRecord::Schema.define(version: 2021_12_05_130145) do
 
   create_table "pokemons", charset: "utf8mb4", force: :cascade do |t|
     t.string "name"
     t.string "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "external_id"
+    t.index ["external_id"], name: "index_pokemons_on_external_id"
     t.index ["url"], name: "index_pokemons_on_url", unique: true
   end
 
@@ -35,6 +37,8 @@ ActiveRecord::Schema.define(version: 2021_12_05_093000) do
     t.string "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "external_id"
+    t.index ["external_id"], name: "index_types_on_external_id"
     t.index ["name", "url"], name: "index_types_on_name_and_url", unique: true
   end
 

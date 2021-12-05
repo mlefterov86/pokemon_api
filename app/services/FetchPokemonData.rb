@@ -43,8 +43,11 @@ class FetchPokemonData
 
     def fetch_pokemon_types!(pokemon)
       response = Faraday.get(pokemon.url)
-      types = JSON.parse(response.body)['types']
-      types.each do |type|
+      body = JSON.parse(response.body)
+
+      pokemon.update!(external_id: body['id'])
+
+      body['types'].each do |type|
         slot = type['slot'].to_i
         name = type['type']['name']
         url = type['type']['url']
@@ -63,6 +66,11 @@ class FetchPokemonData
       types.each do |type|
         Type.find_or_initialize_by(name: type['name']).tap  do |record|
           record.url = type['url']
+
+          # instead of doing another API request
+          # to safe time we can parse type['url'] and extract id from it
+          response = Faraday.get(type['url'])
+          record.external_id = JSON.parse(response.body)['id']
           record.save!
         end
       end
