@@ -4,7 +4,7 @@ class Api::V1::BaseController < ApplicationController
   private
 
   def render_error(error)
-    render json: ApiExceptions::Serializer.new(error), status: error.status
+    render json: ApiExceptions::Serializer.new(error), status: error.respond_to?(:status) ? error.status : 500
   end
 
   def per_page
