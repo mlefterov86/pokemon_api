@@ -1,11 +1,33 @@
 class FetchPokemonData
   class << self
     def call
+      # to ensure script is storing data in DB
+      clean_database
+
       store_pokemons!
       store_types!
+
+      pokemon_count = Pokemon.count
+      type_count = Type.count
+
+      puts "#### Fetching Pokemons Done!!! ###"
+      puts "#### #{pokemon_count} Pokemons stored in DB ###"
+      puts "#### #{type_count} Pokemon types stored in DB"
+
+      {
+        "data" => [
+          pokemons: pokemon_count,
+          pokemon_types: type_count,
+        ]
+      }
     end
 
     private
+
+    def clean_database
+      Pokemon.destroy_all
+      Type.destroy_all
+    end
 
     def store_pokemons!
       response = connection.get('/pokemon')
