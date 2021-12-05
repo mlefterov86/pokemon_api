@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  version: 2.0.0
+  title: Pokemon API exercise endpoints
+  contact:
+    name: Pokemon API exercise
+servers:
+  - url: '{server_host}:3000'
+tags:
+  - name: Pokemons
+paths:
+  /api/v1/pokemon:
+    get:
+      summary: Get pokemons
+      description: Get all pokemons from pokemon API (20 per default)
+      operationId: getPokemons
+      tags:
+        - Pokemons
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      description: The ID of pokemons from pokemon API response.
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      description: The name of the pokemon
+                      example: bulbasaur
+                    types:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            description: Type ID form pokemons API response
+                            type: integer
+                            example: 12
+                          name:
+                            description: Type name form pokemons API response
+                            type: string
+                            example: grass
+                          slot:
+                            description: Pokemon's type slot
+                            type: integer
+                            example: 1
+                description: The actual data of the collection.
+        '500':
+          description: Server errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                          description: Status code of this error
+                          example: <error status code>
+                        title:
+                          type: string
+                          description: Title of the error
+                          example: <error title>
+                        detail:
+                          type: string
+                          description: Human readable message of this error
+                          example: <error description>
+  /api/v1/pokemon/{id}:
+    get:
+      summary: Get pokemon with {id}
+      description: Get a pokemon data from DB fetched from pokemon API
+      operationId: getPokemon
+      tags:
+        - Pokemons
+      parameters:
+        - in: path
+          name: id
+          description: Id of the pokemon
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    description: The ID of pokemons from pokemon API response.
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    description: The name of the pokemon
+                    example: bulbasaur
+                  types:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          description: Type ID form pokemons API response
+                          type: integer
+                          example: 12
+                        name:
+                          description: Type name form pokemons API response
+                          type: string
+                          example: grass
+                        slot:
+                          description: Pokemon's type slot
+                          type: integer
+                          example: 1
+                description: The actual data of the collection.
+        '500':
+          description: Server errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                          description: Status code of this error
+                          example: <error status code>
+                        title:
+                          type: string
+                          description: Title of the error
+                          example: <error title>
+                        detail:
+                          type: string
+                          description: Human readable message of this error
+                          example: <error description>
