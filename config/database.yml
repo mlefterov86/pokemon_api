@@ -11,7 +11,7 @@ development:
   database: pokemon_development
 
 test:
-  port: <%= ENV.fetch('MYSQL_PORT', 3306) %>
+  <<: *default
   database: pokemon_test
 
 production:
