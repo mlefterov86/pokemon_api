@@ -8,12 +8,10 @@ env:
   MYSQL_PASSWORD: dummy
   MYSQL_ROOT_PASSWORD: dummy
   MYSQL_HOST: 127.0.0.1
-  MYSQL_PORT: 3307
+  MYSQL_PORT: 3306
   MYSQL_DATABASE: pokemon_test
 
-on:
-  push:
-    branches: [main]
+on: push
 jobs:
   test:
     name: "RSpec Tests"
@@ -26,10 +24,10 @@ jobs:
           MYSQL_PASSWORD: dummy
           MYSQL_ROOT_PASSWORD: dummy
           MYSQL_HOST: 127.0.0.1
-          MYSQL_PORT: 3307
+          MYSQL_PORT: 3306
           MYSQL_DATABASE: pokemon_test
         ports:
-          - 3307:3306
+          - 3306:3306
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -39,10 +37,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - name: Setup Ruby
-        uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ env.RUBY_VERSION }}
+          ruby-version: 2.6.6
+          bundler-cache: true
       - name: Install dependencies
         run: |
           sudo apt-get -yqq install default-libmysqlclient-dev default-mysql-client
@@ -62,7 +60,7 @@ jobs:
           bundle install --jobs 4 --retry 3 --path vendor/bundle
       - name: Setup Database
         run: |
-          bundle exec rake db:prepare
+          bundle exec rake db:test:prepare
       - name: Run tests
         run: |
-          bundle exec rake rspec
+          bundle exec rspec
