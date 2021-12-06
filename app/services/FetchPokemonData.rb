@@ -35,28 +35,30 @@ class FetchPokemonData
       pokemons.each do |pokemon|
         pokemon = Pokemon.find_or_initialize_by(url: pokemon['url']).tap do |record|
           record.name = pokemon['name']
+          response = Faraday.get(record.url)
+          pokemon_body = JSON.parse(response.body)
+          record.external_id = pokemon_body['id']
           record.save!
+          fetch_pokemon_types!(record, pokemon_body)
         end
-        fetch_pokemon_types!(pokemon)
       end
     end
 
-    def fetch_pokemon_types!(pokemon)
-      response = Faraday.get(pokemon.url)
-      body = JSON.parse(response.body)
-
-      pokemon.update!(external_id: body['id'])
-
-      body['types'].each do |type|
+    def fetch_pokemon_types!(record, pokemon_body)
+      # response = Faraday.get(pokemon.url)
+      # body = JSON.parse(response.body)
+      #
+      # pokemon.update!(external_id: body['id'])
+      pokemon_body['types'].each do |type|
         slot = type['slot'].to_i
         name = type['type']['name']
         url = type['type']['url']
 
         type = Type.find_or_initialize_by(name: name).tap do |record|
           record.url = url
-          record.save!
+          record.save!(validate: false)
         end
-        pokemon.slots.create!(slot: slot, type: type)
+        record.slots.create!(slot: slot, type: type)
       end
     end
 
