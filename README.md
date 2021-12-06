@@ -8,6 +8,7 @@
 * [Prepopulate database](#fill_in_db)
 * [Endpoints](#endpoints)
 * [Swagger](#Swagger)
+* [Server host](#server_host)
 
 
 <a name="introduction"></a>
@@ -46,3 +47,7 @@ There are two endpoints
 <a name="Swagger"></a>
 ## Swagger
 Please copy the content of `swagger.yaml` file and paste it in a online swagger editor (for example https://editor.swagger.io/)
+
+<a name="server_host"></a>
+## Test App is deployed to Heroku 
+Since app is deployed into a testing env on Heroku `{server_host} == 'https://mlefterov-pokemon-api-test-123.herokuapp.com/'` and you can use it in [Endpoints](#endpoints) and [Prepopulate database](#fill_in_db)
